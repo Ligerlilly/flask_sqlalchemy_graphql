@@ -1,5 +1,4 @@
-#import code
-#code.interact(local=dict(globals(), **locals()))
+import code
 
 import graphene
 from graphene import relay
@@ -22,13 +21,14 @@ class Employee(SQLAlchemyObjectType):
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
     all_employees = SQLAlchemyConnectionField(Employee)
-    employee = graphene.Field(Employee, name=graphene.String())
+    employee = graphene.Field(Employee, id=graphene.Int())
 
     def resolve_employee(self, args, info, x):
         employees = EmployeeModel.query.all()
 
         for e in employees:
-            if e.name == args.get("name"):
+            #code.interact(local=dict(globals(), **locals()))
+            if e.id == args.get("id"):
                 return e
 
 schema = graphene.Schema(query=Query)
