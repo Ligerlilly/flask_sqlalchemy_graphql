@@ -1,3 +1,4 @@
+import code
 from sqlalchemy import *
 from sqlalchemy.orm import (scoped_session, sessionmaker, relationship,
                             backref)
@@ -12,6 +13,13 @@ Base = declarative_base()
 # We will need this for querying
 Base.query = db_session.query_property()
 
+class CRUD():
+    def save(self):
+        #code.interact(local=dict(globals(), **locals()))    
+        if self.id:
+            db_session.add(self)
+        return db_session.commit()
+
 
 class Department(Base):
     __tablename__ = 'department'
@@ -19,7 +27,7 @@ class Department(Base):
     name = Column(String)
 
 
-class Employee(Base):
+class Employee(Base, CRUD):
     __tablename__ = 'employee'
     id = Column(Integer, primary_key=True)
     name = Column(String)
